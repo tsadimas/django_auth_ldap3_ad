@@ -150,6 +150,8 @@ class LDAP3ADBackend(object):
                     # try to retrieve user from database and update it
                     username_field = getattr(settings, 'LDAP_USER_MODEL_USERNAME_FIELD', 'username') 
                     lookup_username = user_attribs[settings.LDAP_ATTRIBUTES_MAP[username_field]]
+                    if type(lookup_username) is list:
+                        lookup_username = lookup_username[0]
                     usr = user_model.objects.get(**{"{0}__iexact".format(username_field): lookup_username})
                 except user_model.DoesNotExist:
                     # user does not exist in database already, create it
